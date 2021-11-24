@@ -53,13 +53,13 @@ app.get('/param/:id/:name', function (req, res) {
     res.send(req.params)
 })
 
-app.post('/create', function (req, res) {
+app.post('/create', function (req, res) { // front 쪽에서 post 전달 시 json 형식으로 받을 때
     console.log('post create req.headers',req.headers['content-type']);    
     console.log(req.body);
     res.send(req.body)
 })
 
-app.post('/create_form',upload.array(),function (req, res) {
+app.post('/create_form',upload.array(),function (req, res) { // front 쪽에서 post 전달 시 formdata 형식으로 받을 경우
     console.log('post create req.headers',req.headers['content-type']);    
     console.log(req.body.email);
     res.send(req.body)
