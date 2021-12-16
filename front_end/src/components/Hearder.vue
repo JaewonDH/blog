@@ -2,7 +2,7 @@
   <div id="main_container">    
      <nav>           
         <div id="nav_log">
-          <a href="">{{$t('menu_title')}}</a>
+          <a href="">Blog</a>
         </div>          
         <ul id="nav_menu" v-if="navEnable">
           <li v-for="(item,index) in menuDataArray" :key="index">

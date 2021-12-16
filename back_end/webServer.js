@@ -1,11 +1,12 @@
 const express = require('express');
+const database = require('./db/database');
 const cors = require('cors'); // Access-Control-Allow-Origin  해결 모듈
+
 const multer  = require('multer') // // form-data를 받을 때 필요 
 const upload = multer({ dest: 'uploads/' }) // form-data를 받을 때 필요 
+
 const app = express();
-
 let portNumber = 3333;
-
 app.use(express.static('public')); //특정 폴더의 접근을 허가 
 app.use(express.urlencoded({ extended: false })); //포스트로 일반 json object를 받을 때 필요 
 app.use(express.json()) //포스트로 일반 json object를 받을 때 필요 
@@ -59,10 +60,25 @@ app.post('/create', function (req, res) { // front 쪽에서 post 전달 시 jso
     res.send(req.body)
 })
 
-app.post('/create_form',upload.array(),function (req, res) { // front 쪽에서 post 전달 시 formdata 형식으로 받을 경우
-    console.log('post create req.headers',req.headers['content-type']);    
-    console.log(req.body.email);
-    res.send(req.body)
-    
-    //res.status(500).send('Internal Server Error');
+// blog 리스트 목록 
+app.get('/boardList', function (request, response) {
+    database.getBoardList((error, results) => {
+        if (error == null) {
+            response.status(200).send(results);
+        }
+    });
+})
+
+// blog 글 추가
+app.post('/write', upload.array(), function (request, response) { // front 쪽에서 post 전달 시 form data 형식으로 받을 경우        
+    let body = request.body;
+    console.log('/write body', body);
+    database.insertBoard([body.title, body.tag, body.content, ], (error => {
+        console.log('insertBoard error', error);
+        if (error == null) {
+            response.status(200).send('게시글 등록 완료');
+        } else {
+            response.status(400).send('게시글이 비여 있어요');
+        }
+    }));
 })

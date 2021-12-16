@@ -1,16 +1,15 @@
 <template>
-  <div class="list_container">
+  <div class="list_container">    
     <div class="list_block" v-for="(item,index) in listData" :key="index" @click="gotoDetailInfo()">      
       <div class="tag_value">
-        <p><span class="tag_bar">{{item.tagValue}}</span></p>        
+        <p><span class="tag_bar">{{item.tag}}</span></p>        
       </div>
       <div class="content_block">
         <div>
-          <p class="title_content">{{item.title}}</p>
-          <p class="sub_title_content">{{item.subTitle}}</p>
+          <p class="title_content">{{item.title}}</p>          
         </div>
         <div class="title_date_block">
-          <p>{{item.date}}</p>
+          <p>{{item.created}}</p>
         </div>        
       </div>      
       <div class="line"></div>
@@ -19,27 +18,23 @@
 </template>
 
 <script>
+import axios from 'axios'; // import 후 사용  vue 기반
 export default {
+  created(){
+    this.getList();
+  },
   data(){
-    return{
-      listData:[
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-      {tagValue:'Design', title:'리디북스 PAPER PRO UI 디자인하기', subTitle:'리디북스 전자 임크 리더기의 UI 디자인 과정을 공유 합니다.',date:'2021.08.02'},
-    ]
-    }
+    return{  
+      listData:[],
+      HOST_ADD:'http://localhost:3333/'
+    }  
   },
 
   methods:{    
-    gotoDetailInfo(){
-
+    getList(){
+      axios.get(this.HOST_ADD+'boardList').then(response=>{
+        this.listData=response.data;        
+      })
     }
   }
 }
