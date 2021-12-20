@@ -21,7 +21,9 @@
 
 <script>
 import axios from 'axios'; // import 후 사용  vue 기반
+import {CommonMixin} from '@/mixins/CommonMixin.js';
 export default {
+  mixins:[CommonMixin],
   data(){
     return{
       input:{
@@ -29,11 +31,7 @@ export default {
         text:'',
         tag:''
       },
-      HOST_ADD:'http://localhost:3333/'
     }
-  },
-  components: {
-   
   },
   methods:{    
     sendForm(){
@@ -43,17 +41,9 @@ export default {
       bodyForm.append('tag', this.input.tag);
       axios.post(this.HOST_ADD+'write',bodyForm).then(response=>{        
         console.log(response);
+        this.$router.push({name:'BlogList'});
       });
     },
-    send(){     
-      let test={
-        name:'jjjj',
-        add:'adddd'
-      }
-      axios.post(this.HOST_ADD+'create',test).then(response=>{
-        console.log(response);
-      });
-    }
   }
 }
 </script>

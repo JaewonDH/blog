@@ -1,40 +1,95 @@
 <template>
-  <div class="list_container">    
-    <div class="list_block" v-for="(item,index) in listData" :key="index" @click="gotoDetailInfo()">      
-      <div class="tag_value">
-        <p><span class="tag_bar">{{item.tag}}</span></p>        
+  <div class="main_container">
+    <div class=tag_list_container>
+      <div class="tag_title">태그 목록</div>
+      <div class=tag_line></div>
+      <div>
+        <ol>
+          <li class=tag_itme v-for="(item,index) in tagList" :key="index" @click="onClickTagItem(item)">
+            <span :class="item.selectClass" class=tag_name>{{item.name}}</span> 
+            <span class="tag_item">({{item.count}})</span>
+          </li>
+        </ol>
       </div>
-      <div class="content_block">
-        <div>
-          <p class="title_content">{{item.title}}</p>          
+    </div>
+    <div class="list_container">
+      <div class="list_block" v-if="listData.length==0">
+          <div class="content_block">
+            <div>
+              <p class="title_content">글을 작성하세요</p>
+            </div>
+          </div>
+      </div>
+      <div v-else>
+        <div class="list_block" v-for="(item,index) in listData" :key="index" @click="gotoDetailInfo()">
+          <div class="tag_value">
+            <p><span class="tag_bar">{{item.name}}</span></p>
+          </div>
+          <div class="content_block">
+            <div>
+              <p class="title_content">{{item.title}}</p>
+            </div>
+            <div class="title_date_block">
+              <p>{{item.created}}</p>
+            </div>
+          </div>
+          <div class="line"></div>
         </div>
-        <div class="title_date_block">
-          <p>{{item.created}}</p>
-        </div>        
-      </div>      
-      <div class="line"></div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'; // import 후 사용  vue 기반
+import axios from 'axios';
+import {CommonMixin} from '@/mixins/CommonMixin.js';
 export default {
+  mixins:[CommonMixin],
   created(){
-    this.getList();
+    this.getList(0);
+    this.getTagList();
   },
   data(){
     return{  
       listData:[],
-      HOST_ADD:'http://localhost:3333/'
+      tagList:[],
     }  
   },
 
   methods:{    
-    getList(){
-      axios.get(this.HOST_ADD+'boardList').then(response=>{
+    getTagList(){
+      axios.get(this.HOST_ADD+'tagList').then(response=>{
+        console.log('response',response)
+      this.tagList.push({
+        name:'전체',
+        count:response.data.totalCount,
+        id:'0'
+      })
+      response.data.tagList.forEach(item => {
+          this.tagList.push({
+            name:item.name,
+            count:item.count,            
+            id:item.id,
+            selectClass:''
+          })
+        })
+      });
+    },
+    getList(tagID){
+      axios.get(this.HOST_ADD+'boardList/'+tagID).then(response=>{
+        console.log('boardList',response.data);
         this.listData=response.data;        
       })
+    },
+    onClickTagItem(item){
+      this.tagList.forEach(tagItem=>{
+        if (tagItem.id == item.id) {
+          tagItem.selectClass = 'tag_name_select';
+        } else {
+          tagItem.selectClass = '';
+        }
+      });
+      this.getList(item.id)
     }
   }
 }
@@ -43,24 +98,19 @@ export default {
 <style>
 .list_container{
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 20px;
+  flex-direction: column;  
+  padding: 20px;  
 }
 
 .content_block{
   display: flex;
+  margin-bottom: 10px;
 }
 
 .title_content{
+  width: 560px;
   font-size: 30px;
   font-weight: bolder;
-}
-
-.sub_title_content{
-  font-size: 20px;
-  font-weight: bolder;
-  color: gray;
 }
 
 .tag_bar{
@@ -72,25 +122,73 @@ export default {
 }
 
 .title_date_block{
-  margin-left: 50px;
+  width: 220px;
   display: flex;
   flex-direction: column;
   justify-content: center;
 }
 
+.tag_line{  
+  border: solid rgb(144, 144, 144);  
+  border-width: 0 1px 1px 0;  
+}
 .line{
   background-color: rgb(26,188,156);  
-  border: solid 0.5px rgb(26,188,156);  
+  border: solid  rgb(26,188,156);  
+  border-width: 0 1px 1px 0;  
+}
+
+ol{
+  margin: 0px;
+  padding: 10px;
+}
+
+li{
+  list-style: none;
+  margin-bottom: 10px;
+
+}
+
+.tag_title{
+  padding: 3px;
+  font-weight: bold;
 }
 
 .list_block p{
   margin: 5px;
-
 }
 
 .list_block{
+  width: 700px;
+  padding: 15px;    
+}
+
+.tag_list_container{
+  width: 150px;
+  padding: 20px 0 0 0;
+
+}
+
+.tag_item{
+  margin-left: 4px;
+}
+
+.main_container{
+  display: flex;
+  justify-content:center
+}
+
+.tag_name{
   cursor: pointer;
-  padding: 15px;
+}
+
+.tag_name:hover{
+  text-decoration: underline;
+}
+
+.tag_name_select{
+  color: rgb(26,188,156);
+  font-weight: bold;
 }
 
 </style>
