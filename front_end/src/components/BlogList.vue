@@ -73,6 +73,7 @@ export default {
             selectClass:''
           })
         })
+      this.onClickTagItem(this.tagList[0])
       });
     },
     getList(tagID){
