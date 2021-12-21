@@ -2,7 +2,7 @@
   <div id="main_container">    
      <nav>           
         <div id="nav_log">
-          <a href="">Blog</a>
+          <a href="">블로그</a>
         </div>          
         <ul id="nav_menu" v-if="navEnable">
           <li v-for="(item,index) in menuDataArray" :key="index">
@@ -16,8 +16,8 @@
         <a href="#" class="menu-a"><img @click="onMenu()" class="menu-img" src="../assets/menu-icon.png"></a>
     </nav>    
     <div class="header_block">
-      <img src="../assets/header_logo.jpg">
-      <h1 class="header_block_title">Welecome to Blog</h1>
+      <!-- <img src="../assets/header_logo.jpg"> -->
+      <h1 class="header_block_title">개발 블로그</h1>
     </div>
   </div>  
 </template>
@@ -27,9 +27,8 @@ export default {
     data(){
       return {        
           menuDataArray:[            
-             {title:'Home',path: "/"},
-             {title:'About',path: "/BlogListDetail"},
-             {title:'Write',path: "/BlogWrite"},                                       
+             {title:'목록',path: "/"},          
+             {title:'새 글 작성',path: "/BlogWrite"},                                       
           ],          
           navEnable:true,          
       }

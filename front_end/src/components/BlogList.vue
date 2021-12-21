@@ -5,7 +5,7 @@
       <div class=tag_line></div>
       <div>
         <ol>
-          <li class=tag_itme v-for="(item,index) in tagList" :key="index" @click="onClickTagItem(item)">
+          <li class=tag_itme v-for="(item,index) in tagList" :key="index" @click="onTagItem(item)">
             <span :class="item.selectClass" class=tag_name>{{item.name}}</span> 
             <span class="tag_item">({{item.count}})</span>
           </li>
@@ -21,7 +21,7 @@
           </div>
       </div>
       <div v-else>
-        <div class="list_block" v-for="(item,index) in listData" :key="index" @click="gotoDetailInfo()">
+        <div class="list_block" v-for="(item,index) in listData" :key="index" @click="gotoDetailInfo(item)">
           <div class="tag_value">
             <p><span class="tag_bar">{{item.name}}</span></p>
           </div>
@@ -73,7 +73,7 @@ export default {
             selectClass:''
           })
         })
-      this.onClickTagItem(this.tagList[0])
+      this.onTagItem (this.tagList[0])
       });
     },
     getList(tagID){
@@ -82,7 +82,7 @@ export default {
         this.listData=response.data;        
       })
     },
-    onClickTagItem(item){
+    onTagItem(item){
       this.tagList.forEach(tagItem=>{
         if (tagItem.id == item.id) {
           tagItem.selectClass = 'tag_name_select';
@@ -91,105 +91,113 @@ export default {
         }
       });
       this.getList(item.id)
+    },
+    gotoDetailInfo(item){
+      this.$router.push({
+        name:'BlogListDetail',
+        params :{
+          id:item.id
+        }
+      });
     }
   }
 }
 </script>
 
-<style>
-.list_container{
+<style lang="scss">
+
+.main_container {
   display: flex;
-  flex-direction: column;  
-  padding: 20px;  
-}
-
-.content_block{
-  display: flex;
-  margin-bottom: 10px;
-}
-
-.title_content{
-  width: 560px;
-  font-size: 30px;
-  font-weight: bolder;
-}
-
-.tag_bar{
-  background-color: rgb(26,188,156); 
-  border-radius: 4px;   
-  padding: 2px;
-  font-weight: bolder;
-  color: white;
-}
-
-.title_date_block{
-  width: 220px;
-  display: flex;
-  flex-direction: column;
   justify-content: center;
+
+  .list_container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+
+    .list_block {
+      width: 700px;
+      padding: 15px;
+
+      .content_block {
+        display: flex;
+        margin-bottom: 10px;
+
+        p {
+          margin: 5px;
+        }
+
+        .title_content {
+          width: 560px;
+          font-size: 30px;
+          font-weight: bolder;
+          cursor: pointer;
+        }
+
+        .title_date_block {
+          width: 220px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+      }
+
+      .tag_bar {
+        background-color: rgb(26, 188, 156);
+        border-radius: 4px;
+        padding: 2px;
+        font-weight: bolder;
+        color: white;
+      }
+    }
+  }
+
+  .tag_list_container {
+    width: 150px;
+    padding: 20px 0 0 0;
+
+    .tag_title {
+      padding: 3px;
+      font-weight: bold;
+    }
+
+    .tag_line {
+      border: solid rgb(144, 144, 144);
+      border-width: 0 1px 1px 0;
+    }
+
+    ol {
+      margin: 0px;
+      padding: 10px;
+
+      li {
+        list-style: none;
+        margin-bottom: 10px;
+
+        .tag_name {
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+
+        .tag_name_select {
+          color: rgb(26, 188, 156);
+          font-weight: bold;
+        }
+
+        .tag_item {
+          margin-left: 4px;
+        }
+      }
+    }
+  }
 }
 
-.tag_line{  
-  border: solid rgb(144, 144, 144);  
-  border-width: 0 1px 1px 0;  
-}
 .line{
   background-color: rgb(26,188,156);  
   border: solid  rgb(26,188,156);  
   border-width: 0 1px 1px 0;  
 }
-
-ol{
-  margin: 0px;
-  padding: 10px;
-}
-
-li{
-  list-style: none;
-  margin-bottom: 10px;
-
-}
-
-.tag_title{
-  padding: 3px;
-  font-weight: bold;
-}
-
-.list_block p{
-  margin: 5px;
-}
-
-.list_block{
-  width: 700px;
-  padding: 15px;    
-}
-
-.tag_list_container{
-  width: 150px;
-  padding: 20px 0 0 0;
-
-}
-
-.tag_item{
-  margin-left: 4px;
-}
-
-.main_container{
-  display: flex;
-  justify-content:center
-}
-
-.tag_name{
-  cursor: pointer;
-}
-
-.tag_name:hover{
-  text-decoration: underline;
-}
-
-.tag_name_select{
-  color: rgb(26,188,156);
-  font-weight: bold;
-}
-
 </style>
