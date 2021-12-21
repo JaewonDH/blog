@@ -8,9 +8,9 @@ class Database {
         ALL_SELECT_TAG_QUERY: 'SELECT * FROM tag',
         WHERE_TAG_NAME_QUERY: 'WHERE tag.id=?',
         ORDER_BY_QUERY:'ORDER BY created DESC',
-
         SELECT_TAG_QUERY: `SELECT tag.id, tag.name, count(tag.id) as 'count' FROM board INNER JOIN tag ON board.tag=tag.id group by tag.id`,
-        BOARD_ALL_COUNT:'SELECT count(*) AS count FROM board '
+        BOARD_ALL_COUNT:'SELECT count(*) AS count FROM board ',
+        SELECT_BOARD_ITEM:'WHERE board.id=?'
         // SELECT board.id,title,tag.name,content,created FROM board INNER JOIN tag ON board.tag=tag.id WHERE tag.id=?
     }
 
@@ -37,6 +37,11 @@ class Database {
             `${this.queryStr.ALL_SELECT_BOARD_QUERY} ${this.queryStr.ORDER_BY_QUERY}`;       
         console.log('query',query)
         return this.db.query(query,id,callback);
+    }
+
+    getBoardItem(id){
+        let query= `${this.queryStr.ALL_SELECT_BOARD_QUERY} ${this.queryStr.SELECT_BOARD_ITEM}`
+        return this.query(query,id);
     }
 
     getBoardCount(){

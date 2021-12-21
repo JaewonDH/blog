@@ -55,9 +55,20 @@ app.post('/write', formData.array(), function (request, response) { // front 쪽
     })
     .catch(error => {
         console.log('error', error);
-        response.status(400).send('게시글이 등록 실패');
+        response.status(400).send(error);
     });
 })
+
+// board 항목의 상세 정보 가져 오기 
+app.get('/boardInfo/:id', (request, response) => {
+    console.log('boardInfo request.params.id', request.params.id)
+    database.getBoardItem(request.params.id).then(results => {
+        let object = results.length > 0 ? results[0] : [];
+        response.status(200).send(object);
+    }).catch(error => {
+        response.status(400).send(error);
+    })
+});
 
 // blog tag 목록 가져오기
 app.get('/tagList', function (request, response) {
@@ -72,7 +83,7 @@ app.get('/tagList', function (request, response) {
         response.status(200).send(result);
     }).catch(error=>{
         console.log('error',error);
-        response.status(400).send('조회 실패');
+        response.status(400).send(error);
     });
 })
 
