@@ -1,27 +1,30 @@
 <template>
-  <div class="write_container write_container_resize">
-    <div class="write_wrrap">
-      <div class="write_editor">
-        <div class="input_container">
-          <div class="input_box">
-            <span class="input_label">제목:</span> <input type="text" v-model="input.title">
-          </div>
-          <div class="input_box">
-            <span class="input_label">내용:</span> <textarea v-model="input.text" ></textarea>
-          </div>
-          <div class="input_box">
-            <span class="input_label">TAG:</span> <input type="text" v-model="input.tag">
-          </div>
-          <button @click="sendForm()">등록</button>          
-        </div>
-      </div>              
-    </div>        
+  <div class="write_container">
+    <div class="input_container">
+      <div class="input_box">
+        <span class="input_label">제목:</span> <input type="text" v-model="input.title" placeholder="제목을 입력하세요">
+      </div>
+      <div class="input_box">
+        <span class="input_label">TAG:</span> <input type="text" v-model="input.tag" placeholder="태그를 입력하세요">
+      </div>
+      <div id="editor" class="toastUIEditor"></div>
+      <div>
+        <div class="reg_button" @click="sendForm()">등록</div>
+        <div class="reg_button" @click="sendForm()">뒤로가기</div>
+      </div>      
+
+     
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'; // import 후 사용  vue 기반
 import {CommonMixin} from '@/mixins/CommonMixin.js';
+import Editor from '@toast-ui/editor';
+import 'codemirror/lib/codemirror.css' // codemirror style
+import '@toast-ui/editor/dist/toastui-editor.css' // Editor style
+import fontSizePicker from 'tui-font-size-picker';
 export default {
   mixins:[CommonMixin],
   data(){
@@ -31,73 +34,84 @@ export default {
         text:'',
         tag:''
       },
+      toastUiEditor:{},
+      toastUiViewer:{}
     }
   },
-  methods:{    
-    sendForm(){
+  mounted() {
+    this.initToastUiEditor();
+  },
+  methods: {
+    initToastUiEditor() {
+      this.toastUiEditor = new Editor({
+        el: document.querySelector('#editor'),       
+        initialEditType: 'markdown',
+        previewStyle: 'vertical',
+        height: '580px',
+        language: 'ko',
+        plugins: [fontSizePicker]
+      });    
+    },
+    sendForm() {
+      let markDown=this.toastUiEditor.getMarkdown();
+      console.log('markDown',markDown);      
       const bodyForm = new FormData();
       bodyForm.append('title', this.input.title);
-      bodyForm.append('content', this.input.text);
+      bodyForm.append('content', markDown);
       bodyForm.append('tag', this.input.tag);
-      axios.post(this.HOST_ADD+'write',bodyForm).then(response=>{        
+      axios.post(this.HOST_ADD + 'write', bodyForm).then(response => {
         console.log(response);
-        this.$router.push({name:'BlogList'});
+        this.$router.push({
+          name: 'BlogList'
+        });
       });
     },
   }
 }
 </script>
 
-<style >
+<style lang="scss">
+$input_cotainer_width:1200px;
+
 .write_container{
   display: flex;
   justify-content: center;  
-  height: 600px;
-  margin: auto;
   margin-top: 20px;
+  .input_container{
+    width:$input_cotainer_width;    
+    .input_box{
+      font-size: 40px;
+      display:flex;
+      align-items: center;
+      padding: 10px;
+      .input_label{
+        width:100px;       
+      }
+      input{
+        width: 1100px;
+        font-size: 40px;
+        font-family: 'Gowun Dodum', sans-serif;
+      }
+    }
+    .toastUIEditor{
+      margin-top: 30px;
+      margin-bottom: 20px;
+    }
+
+    .reg_button{        
+      display:inline-block;    
+      padding: 10px;
+      margin: 10px;      
+      color: white;
+      background-color: rgb(26,188,156);
+      border-radius: 4px;      
+      float: right;
+      cursor: pointer;
+      box-shadow : 2px 2px 5px #999;
+      &:hover{
+         background-color: rgb(5, 158, 128)
+      }
+    }    
+  } 
 }
-
-.write_container_resiz{
-  width: 400px;
-}
-
-
-.input_container{
-  border: solid 1px black;
-  padding: 20px;  
-}
-
-.input_box{
-  width: auto;
-  margin-bottom:10px;    
-}
-
-.input_label{
-  width: 5%;
-  height: 30px;
-}
-
-input {  
-  width: 95%;
-  height: 30px;
-}
-
-textarea{
-  width: 500px;
-  height: 400px;
-  resize: none;
-}
-
-button{
-  width: 100%;
-  margin-top:10px;
-  height: 30px;
-}
-
-@media screen and (max-width: 600px) {
-  .write_container_resiz{
-    width: 1200px;
-  }
-}
-
 </style>
