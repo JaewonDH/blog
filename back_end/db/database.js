@@ -10,7 +10,8 @@ class Database {
         ORDER_BY_QUERY:'ORDER BY created DESC',
         SELECT_TAG_QUERY: `SELECT tag.id, tag.name, count(tag.id) as 'count' FROM board INNER JOIN tag ON board.tag=tag.id group by tag.id`,
         BOARD_ALL_COUNT:'SELECT count(*) AS count FROM board ',
-        SELECT_BOARD_ITEM:'WHERE board.id=?'
+        SELECT_BOARD_ITEM:'WHERE board.id=?',
+        DELETE_BOARD_ITEM:'DELETE FROM board WHERE id=?'
         // SELECT board.id,title,tag.name,content,created FROM board INNER JOIN tag ON board.tag=tag.id WHERE tag.id=?
     }
 
@@ -37,6 +38,10 @@ class Database {
             `${this.queryStr.ALL_SELECT_BOARD_QUERY} ${this.queryStr.ORDER_BY_QUERY}`;       
         console.log('query',query)
         return this.db.query(query,id,callback);
+    }
+
+    deleteBoardItem(id){
+        return this.query(this.queryStr.DELETE_BOARD_ITEM,id);
     }
 
     getBoardItem(id){
@@ -71,10 +76,12 @@ class Database {
                     }
                 });
             } else {
-                this.db.query(queryStr, values, (error, results)=>{
+                this.db.query(queryStr, values, (error, results)=>{            
                     if(error==null){
+                        console.log('1')
                         resolve(results);
                     }else{
+                        console.log('2')
                         reject(error);
                     }
                 });
@@ -83,14 +90,3 @@ class Database {
     }   
 }
 module.exports =new Database(mySQL);
-/*
-  db.insertBoard(['node.js에서 mysql 사용하기','node.js','node.js1111111111111111111112323'],(error,results)=>{
-      console.log('error',error);
-      console.log('results',results);
-  });
-
- db.getBoardList((error,results)=>{
-    console.log('error',error);
-    console.log('results',results);
- });
-*/

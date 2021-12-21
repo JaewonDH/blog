@@ -2,7 +2,8 @@ const express = require('express');
 const database = require('./db/database');
 const cors = require('cors'); // Access-Control-Allow-Origin  해결 모듈
 
-const multer = require('multer') // // form-data를 받을 때 필요 
+const multer = require('multer'); // // form-data를 받을 때 필요 
+const { response } = require('express');
 const formData = multer({
     dest: 'uploads/'
 }) // form-data를 받을 때 필요 
@@ -61,7 +62,7 @@ app.post('/write', formData.array(), function (request, response) { // front 쪽
 
 // board 항목의 상세 정보 가져 오기 
 app.get('/boardInfo/:id', (request, response) => {
-    console.log('boardInfo request.params.id', request.params.id)
+    console.log('getBoardItem request.params.id', request.params.id)
     database.getBoardItem(request.params.id).then(results => {
         let object = results.length > 0 ? results[0] : [];
         response.status(200).send(object);
@@ -86,4 +87,14 @@ app.get('/tagList', function (request, response) {
         response.status(400).send(error);
     });
 })
+
+app.delete('/board/:id',(request,response)=>{
+    console.log('deleteBoardItem request.params.id', request.params.id)
+    database.deleteBoardItem(request.params.id).then(result=>{       
+        response.status(200).send('삭제완료');
+    }).catch(error=>{
+        console.log('deleteBoardItem error',error);
+        response.status(400).send(error);
+    });
+});
 
