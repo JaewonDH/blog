@@ -1,27 +1,38 @@
 <template>
-  <div id="app">    
-    <Hearder></Hearder>  
+  <div id="app">
+    <ToastMessage />
+    <Hearder></Hearder>
     <router-view></router-view>
   </div>
 </template>
 
 <script>
-import Hearder from './components/Hearder.vue'
+import Hearder from "./components/Hearder.vue";
+import ToastMessage from "@/components/ToastMessage";
 export default {
-  name: 'App',
+  name: "App",
   components: {
-    Hearder
-  }
-}
+    Hearder,
+    ToastMessage,
+  },
+};
 </script>
 
 <style>
-body{
-  margin: 0px; 
+body {
+  margin: 0px;
 }
 
-body,div, h1, h2, h3, h4, h5, h6, p, span input {
-    font-family: 'Gowun Dodum', sans-serif;
+body,
+div,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span input {
+  font-family: "Gowun Dodum", sans-serif;
 }
-
 </style>
