@@ -5,8 +5,15 @@
       <div class="tag_line"></div>
       <div>
         <ol>
-          <li class="tag_itme" v-for="(item, index) in tagList" :key="index" @click="onTagItem(item)">
-            <span :class="item.selectClass" class="tag_name">{{ item.name }}</span>
+          <li
+            class="tag_itme"
+            v-for="(item, index) in tagList"
+            :key="index"
+            @click="onTagItem(item)"
+          >
+            <span :class="item.selectClass" class="tag_name">{{
+              item.name
+            }}</span>
             <span class="tag_item">({{ item.count }})</span>
           </li>
         </ol>
@@ -21,7 +28,12 @@
         </div>
       </div>
       <div v-else>
-        <div class="list_block" v-for="(item, index) in listData" :key="index" @click="gotoDetailInfo(item)">
+        <div
+          class="list_block"
+          v-for="(item, index) in listData"
+          :key="index"
+          @click="gotoDetailInfo(item)"
+        >
           <div class="tag_value">
             <p>
               <span class="tag_bar">{{ item.name }}</span>

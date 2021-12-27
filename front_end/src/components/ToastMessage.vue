@@ -19,7 +19,7 @@ export default {
     return {
       showToast: false,
       toastType: "information",
-      message: "테스트 입니다 안녕하세요 확인 해주세요 <br> 특히 제목을 입력해야 합니다.",
+      message: "",
       TOAST_TYPE_ERROR: "error",
       TOAST_TYPE_WARNING: "warning",
       TOAST_TYPE_SUCCESS: "success",

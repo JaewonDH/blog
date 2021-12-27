@@ -1,13 +1,28 @@
 <template>
   <div class="write_container">
     <div class="input_container">
-      <div class="input_box"><span class="input_label">제목:</span> <input type="text" v-model="input.title" placeholder="제목을 입력하세요" /></div>
-      <div class="input_box"><span class="input_label">TAG:</span> <input type="text" v-model="input.tag" placeholder="태그를 입력하세요" /></div>
+      <div class="input_box">
+        <span class="input_label">제목:</span>
+        <input
+          type="text"
+          v-model="input.title"
+          placeholder="제목을 입력하세요"
+        />
+      </div>
+      <div class="input_box">
+        <span class="input_label">TAG:</span>
+        <input
+          type="text"
+          v-model="input.tag"
+          placeholder="태그를 입력하세요"
+        />
+      </div>
       <div id="editor" class="toastUIEditor"></div>
       <div>
         <div class="reg_button" @click="sendForm()">등록</div>
         <div class="reg_button" @click="sendForm()">뒤로가기</div>
       </div>
+      sdsd
     </div>
   </div>
 </template>
