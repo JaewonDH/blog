@@ -7,14 +7,14 @@
 </template>
 
 <script>
-import Hearder from "./components/Hearder.vue";
-import ToastMessage from "@/components/ToastMessage";
+import Hearder from './components/Hearder.vue';
+import ToastMessage from '@/components/ToastMessage';
 export default {
-  name: "App",
+  name: 'App',
   components: {
     Hearder,
-    ToastMessage,
-  },
+    ToastMessage
+  }
 };
 </script>
 
@@ -33,6 +33,6 @@ h5,
 h6,
 p,
 span input {
-  font-family: "Gowun Dodum", sans-serif;
+  font-family: 'Gowun Dodum', sans-serif;
 }
 </style>

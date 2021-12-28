@@ -22,30 +22,30 @@
 export default {
   watch: {
     showPoup() {
-      console.log("dffsfs");
-    },
+      console.log('dffsfs');
+    }
   },
   props: {
     showPoup: Boolean,
     title: String,
-    bodyContent: String,
+    bodyContent: String
   },
   data() {
     return {};
   },
   methods: {
     closePopup() {
-      this.$emit("update:showPoup", false);
+      this.$emit('update:showPoup', false);
     },
     onConfirmButton() {
       this.closePopup();
-      this.$emit("onButtonEvnet", true);
+      this.$emit('onButtonEvnet', true);
     },
     onCancelButton() {
       this.closePopup();
-      this.$emit("onButtonEvnet", false);
-    },
-  },
+      this.$emit('onButtonEvnet', false);
+    }
+  }
 };
 </script>
 

@@ -1,27 +1,27 @@
-let mySQL = require("mysql");
+let mySQL = require('mysql');
 class Database {
   queryStr = {
     INSERT_BOARD_QUERY: `INSERT INTO board (title,tag,content,created) VALUE(?,?,?,NOW())`,
     ALL_SELECT_BOARD_QUERY: `SELECT board.id,title,tag.name,content,created FROM board INNER JOIN tag ON board.tag=tag.id`,
-    SEARCH_TAG_NAME_QUERY: "SELECT * FROM tag where name=?",
+    SEARCH_TAG_NAME_QUERY: 'SELECT * FROM tag where name=?',
     INSERT_TAG_QUERY: `INSERT INTO tag (name) VALUE(?)`,
-    ALL_SELECT_TAG_QUERY: "SELECT * FROM tag",
-    WHERE_TAG_NAME_QUERY: "WHERE tag.id=?",
-    ORDER_BY_QUERY: "ORDER BY created DESC",
+    ALL_SELECT_TAG_QUERY: 'SELECT * FROM tag',
+    WHERE_TAG_NAME_QUERY: 'WHERE tag.id=?',
+    ORDER_BY_QUERY: 'ORDER BY created DESC',
     SELECT_TAG_QUERY: `SELECT tag.id, tag.name, count(tag.id) as 'count' FROM board INNER JOIN tag ON board.tag=tag.id group by tag.id`,
-    BOARD_ALL_COUNT: "SELECT count(*) AS count FROM board ",
-    SELECT_BOARD_ITEM: "WHERE board.id=?",
-    DELETE_BOARD_ITEM: "DELETE FROM board WHERE id=?",
-    UPDATE_BOARD_ITEM: "UPDATE board SET title=?,tag=?,content=? WHERE id=?",
+    BOARD_ALL_COUNT: 'SELECT count(*) AS count FROM board ',
+    SELECT_BOARD_ITEM: 'WHERE board.id=?',
+    DELETE_BOARD_ITEM: 'DELETE FROM board WHERE id=?',
+    UPDATE_BOARD_ITEM: 'UPDATE board SET title=?,tag=?,content=? WHERE id=?',
     // SELECT board.id,title,tag.name,content,created FROM board INNER JOIN tag ON board.tag=tag.id WHERE tag.id=?
   };
 
   databaseInfo = {
-    host: "localhost",
-    user: "root",
-    password: "1234",
-    database: "blog",
-    timezone: "KST", //NOW() 타임존 설정
+    host: 'localhost',
+    user: 'root',
+    password: '1234',
+    database: 'blog',
+    timezone: 'KST', //NOW() 타임존 설정
   };
 
   constructor() {
@@ -42,7 +42,7 @@ class Database {
       id != 0
         ? `${this.queryStr.ALL_SELECT_BOARD_QUERY} ${this.queryStr.WHERE_TAG_NAME_QUERY} ${this.queryStr.ORDER_BY_QUERY}`
         : `${this.queryStr.ALL_SELECT_BOARD_QUERY} ${this.queryStr.ORDER_BY_QUERY}`;
-    console.log("query", query);
+    console.log('query', query);
     return this.db.query(query, id, callback);
   }
 

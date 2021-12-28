@@ -14,21 +14,21 @@
 
 <script>
 export default {
-  name: "Loading",
+  name: 'Loading',
   data() {
     return {
       showToast: false,
-      toastType: "information",
-      message: "",
-      TOAST_TYPE_ERROR: "error",
-      TOAST_TYPE_WARNING: "warning",
-      TOAST_TYPE_SUCCESS: "success",
-      TOAST_TYPE_INFOMATION: "information",
-      timeOutID: undefined,
+      toastType: 'information',
+      message: '',
+      TOAST_TYPE_ERROR: 'error',
+      TOAST_TYPE_WARNING: 'warning',
+      TOAST_TYPE_SUCCESS: 'success',
+      TOAST_TYPE_INFOMATION: 'information',
+      timeOutID: undefined
     };
   },
   watch: {
-    "$store.state.toastData"() {
+    '$store.state.toastData'() {
       if (this.showToast) {
         clearTimeout(this.timeOutID);
       }
@@ -39,7 +39,7 @@ export default {
       this.timeOutID = setTimeout(() => {
         this.showToast = false;
       }, this.$store.state.toastData.time);
-    },
+    }
   },
   methods: {
     closeToast() {
@@ -48,16 +48,16 @@ export default {
     getIcone() {
       switch (this.toastType) {
         case this.TOAST_TYPE_INFOMATION:
-          return "error_outline";
+          return 'error_outline';
         case this.TOAST_TYPE_WARNING:
-          return "warning_amber";
+          return 'warning_amber';
         case this.TOAST_TYPE_SUCCESS:
-          return "done";
+          return 'done';
         case this.TOAST_TYPE_ERROR:
-          return "cancel";
+          return 'cancel';
       }
-    },
-  },
+    }
+  }
 };
 </script>
 

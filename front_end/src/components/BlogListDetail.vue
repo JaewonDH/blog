@@ -20,13 +20,13 @@
 </template>
 
 <script>
-import axios from "axios";
-import { CommonMixin } from "@/mixins/CommonMixin.js";
-import Viewer from "@toast-ui/editor/dist/toastui-editor-viewer";
-import Popup from "@/components/Popup";
+import axios from 'axios';
+import { CommonMixin } from '@/mixins/CommonMixin.js';
+import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
+import Popup from '@/components/Popup';
 export default {
   components: {
-    Popup,
+    Popup
   },
   mixins: [CommonMixin],
   data() {
@@ -36,13 +36,13 @@ export default {
 
       deletePopup: {
         showPoup: false,
-        title: "",
-        content: "",
-      },
+        title: '',
+        content: ''
+      }
     };
   },
   created() {
-    console.log("this.$route.params", this.$route.params);
+    console.log('this.$route.params', this.$route.params);
     this.getBoardInfo(this.$route.params.id);
   },
   mounted() {
@@ -51,19 +51,19 @@ export default {
   methods: {
     getBoardInfo(id) {
       axios
-        .get(this.HOST_ADD + "boardInfo/" + id)
-        .then((response) => {
+        .get(this.HOST_ADD + 'boardInfo/' + id)
+        .then(response => {
           this.boardInfo = response.data;
-          console.log("boardInfo response", response);
+          console.log('boardInfo response', response);
           this.toastUiViewer.setMarkdown(this.boardInfo.content);
         })
-        .catch((error) => {
+        .catch(error => {
           this.showToastError(error);
         });
     },
     initToastUiViewer() {
       this.toastUiViewer = new Viewer({
-        el: document.querySelector("#viewer"),
+        el: document.querySelector('#viewer')
       });
     },
     onDelete() {
@@ -74,15 +74,15 @@ export default {
     onPopupButtonEvnet(confirm) {
       if (confirm) {
         axios
-          .delete(this.HOST_ADD + "board/" + this.$route.params.id)
-          .then((response) => {
-            console.log("onDelete response", response);
+          .delete(this.HOST_ADD + 'board/' + this.$route.params.id)
+          .then(response => {
+            console.log('onDelete response', response);
             if (response.status == 200) {
               this.showToastSuccess(`"${this.boardInfo.title}" 삭제 완료`);
               this.$router.back();
             }
           })
-          .catch((error) => {
+          .catch(error => {
             this.showToastError(error);
           });
       }
@@ -90,10 +90,10 @@ export default {
     onModify() {
       this.setStoreWriteInfo(true, this.$route.params.id);
       this.$router.push({
-        name: "BlogWrite",
+        name: 'BlogWrite'
       });
-    },
-  },
+    }
+  }
 };
 </script>
 

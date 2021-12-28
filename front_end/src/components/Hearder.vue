@@ -30,31 +30,31 @@
 </template>
 
 <script>
-import { CommonMixin } from "@/mixins/CommonMixin.js";
+import { CommonMixin } from '@/mixins/CommonMixin.js';
 export default {
   mixins: [CommonMixin],
   data() {
     return {
       menuDataArray: [
-        { title: "목록", path: "/" },
-        { title: "새 글 작성", path: "/BlogWrite" },
+        { title: '목록', path: '/' },
+        { title: '새 글 작성', path: '/BlogWrite' }
       ],
-      navEnable: true,
+      navEnable: true
     };
   },
 
   mounted() {
-    window.addEventListener("resize", this.windowResize);
+    window.addEventListener('resize', this.windowResize);
   },
 
   beforeDestroy() {
-    window.removeEventListener("resize", this.windowResize);
+    window.removeEventListener('resize', this.windowResize);
   },
 
   methods: {
     gotoRouterMenu(value) {
       console.log(value);
-      if (value == "/BlogWrite") {
+      if (value == '/BlogWrite') {
         this.setStoreWriteInfo(false, 0);
       }
 
@@ -64,14 +64,14 @@ export default {
     },
 
     onMenu() {
-      console.log("onMenu");
+      console.log('onMenu');
       this.navEnable = !this.navEnable;
     },
 
     windowResize() {
       this.navEnable = window.innerWidth >= 600 ? true : false;
-    },
-  },
+    }
+  }
 };
 </script>
 

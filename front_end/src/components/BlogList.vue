@@ -55,8 +55,8 @@
 </template>
 
 <script>
-import axios from "axios";
-import { CommonMixin } from "@/mixins/CommonMixin.js";
+import axios from 'axios';
+import { CommonMixin } from '@/mixins/CommonMixin.js';
 export default {
   mixins: [CommonMixin],
   created() {
@@ -66,61 +66,61 @@ export default {
   data() {
     return {
       listData: [],
-      tagList: [],
+      tagList: []
     };
   },
 
   methods: {
     getTagList() {
       axios
-        .get(this.HOST_ADD + "tagList")
-        .then((response) => {
-          console.log("response", response);
+        .get(this.HOST_ADD + 'tagList')
+        .then(response => {
+          console.log('response', response);
           this.tagList.push({
-            name: "전체",
+            name: '전체',
             count: response.data.totalCount,
-            id: "0",
+            id: '0'
           });
 
-          response.data.tagList.forEach((item) => {
+          response.data.tagList.forEach(item => {
             this.tagList.push({
               name: item.name,
               count: item.count,
               id: item.id,
-              selectClass: "",
+              selectClass: ''
             });
           });
           this.onTagItem(this.tagList[0]);
         })
-        .catch((error) => {
+        .catch(error => {
           this.showToastError(error);
         });
     },
     getList(tagID) {
-      axios.get(this.HOST_ADD + "boardList/" + tagID).then((response) => {
-        console.log("boardList", response.data);
+      axios.get(this.HOST_ADD + 'boardList/' + tagID).then(response => {
+        console.log('boardList', response.data);
         this.listData = response.data;
       });
     },
     onTagItem(item) {
-      this.tagList.forEach((tagItem) => {
+      this.tagList.forEach(tagItem => {
         if (tagItem.id == item.id) {
-          tagItem.selectClass = "tag_name_select";
+          tagItem.selectClass = 'tag_name_select';
         } else {
-          tagItem.selectClass = "";
+          tagItem.selectClass = '';
         }
       });
       this.getList(item.id);
     },
     gotoDetailInfo(item) {
       this.$router.push({
-        name: "BlogListDetail",
+        name: 'BlogListDetail',
         params: {
-          id: item.id,
-        },
+          id: item.id
+        }
       });
-    },
-  },
+    }
+  }
 };
 </script>
 
