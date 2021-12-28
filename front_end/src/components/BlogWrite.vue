@@ -18,11 +18,11 @@
         />
       </div>
       <div id="editor" class="toastUIEditor"></div>
-      <div>
+      <div class="button-container">
+        <div class="reg_button" @click="onBack()">취소</div>
         <div class="reg_button" @click="onRegister()">
           {{ getRegAndModifyButtonStr }}
         </div>
-        <div class="reg_button" @click="onBack()">취소</div>
       </div>
     </div>
     <Popup
@@ -205,21 +205,24 @@ $input_cotainer_width: 1200px;
     }
     .toastUIEditor {
       margin-top: 30px;
-      margin-bottom: 20px;
+      margin-bottom: 10px;
     }
 
-    .reg_button {
-      display: inline-block;
-      padding: 10px;
-      margin: 10px;
-      color: white;
-      background-color: rgb(26, 188, 156);
-      border-radius: 4px;
-      float: right;
-      cursor: pointer;
-      box-shadow: 2px 2px 5px #999;
-      &:hover {
-        background-color: rgb(5, 158, 128);
+    .button-container {
+      display: flex;
+      justify-content: flex-end;
+      .reg_button {
+        display: inline-block;
+        padding: 10px;
+        margin: 10px;
+        color: white;
+        background-color: rgb(26, 188, 156);
+        border-radius: 4px;
+        cursor: pointer;
+        box-shadow: 2px 2px 5px #999;
+        &:hover {
+          background-color: rgb(5, 158, 128);
+        }
       }
     }
   }
