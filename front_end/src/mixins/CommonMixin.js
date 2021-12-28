@@ -30,5 +30,11 @@ export const CommonMixin = {
         name: "BlogList",
       });
     },
+    setStoreWriteInfo(editMode, id) {
+      this.$store.commit("SET_WRITE_INFO", {
+        editMode,
+        id,
+      });
+    },
   },
 };

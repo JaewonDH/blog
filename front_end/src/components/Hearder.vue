@@ -5,7 +5,12 @@
         블로그
       </div>
       <ul id="nav_menu" v-if="navEnable">
-        <li class="menu_item" v-for="(item, index) in menuDataArray" :key="index" @click="gotoRouterMenu(item.path)">
+        <li
+          class="menu_item"
+          v-for="(item, index) in menuDataArray"
+          :key="index"
+          @click="gotoRouterMenu(item.path)"
+        >
           {{ item.title }}
         </li>
       </ul>
@@ -13,7 +18,9 @@
         <li>★</li>
         <li>☆</li>
       </ul>
-      <a href="#" class="menu-a"><img @click="onMenu()" class="menu-img" src="../assets/menu-icon.png"/></a>
+      <a href="#" class="menu-a"
+        ><img @click="onMenu()" class="menu-img" src="../assets/menu-icon.png"
+      /></a>
     </nav>
     <div class="header_block">
       <!-- <img src="../assets/header_logo.jpg"> -->
@@ -47,6 +54,10 @@ export default {
   methods: {
     gotoRouterMenu(value) {
       console.log(value);
+      if (value == "/BlogWrite") {
+        this.setStoreWriteInfo(false, 0);
+      }
+
       if (this.$router.history.current.path != value) {
         this.$router.push({ path: value });
       }

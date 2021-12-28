@@ -4,7 +4,7 @@
     <div class="top_info_container">
       <div>{{ boardInfo.created }}</div>
       <div class="edit_container">
-        <div class="edit_item">수정</div>
+        <div class="edit_item" @click="onModify()">수정</div>
         <div class="edit_item" @click="onDelete()">삭제</div>
       </div>
     </div>
@@ -86,6 +86,12 @@ export default {
             this.showToastError(error);
           });
       }
+    },
+    onModify() {
+      this.setStoreWriteInfo(true, this.$route.params.id);
+      this.$router.push({
+        name: "BlogWrite",
+      });
     },
   },
 };
