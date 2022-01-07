@@ -4,6 +4,7 @@ import BlogList from '../components/BlogList';
 import BlogListDetail from '../components/BlogListDetail';
 import BlogWrite from '../components/BlogWrite.vue';
 import CSSTest from '../components/CSSTest.vue';
+import Test from '../components/Test';
 
 Vue.use(VueRouter);
 let router = new VueRouter({
@@ -29,6 +30,11 @@ let router = new VueRouter({
       path: '/CSSTest', // 경로
       name: 'CSSTest', // 해당 경로의 이름
       component: CSSTest // 이동할 컴포넌트
+    },
+    {
+      path: '/test', // 경로
+      name: 'test', // 해당 경로의 이름
+      component: Test // 이동할 컴포넌트
     }
   ]
 });

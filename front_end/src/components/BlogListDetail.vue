@@ -21,78 +21,102 @@
 
 <script>
 import axios from 'axios';
-import { CommonMixin } from '@/mixins/CommonMixin.js';
 import Viewer from '@toast-ui/editor/dist/toastui-editor-viewer';
 import Popup from '@/components/Popup';
+import {
+  reactive,
+  getCurrentInstance,
+  onMounted,
+  ref
+} from '@vue/composition-api';
+import Common from '../composition/CommonUtile';
 export default {
   components: {
     Popup
   },
-  mixins: [CommonMixin],
-  data() {
-    return {
-      boardInfo: {},
-      toastUiViewer: {},
+  setup() {
+    let {
+      getHost,
+      showToastError,
+      getRouter,
+      showToastSuccess,
+      setStoreWriteInfo,
+      getRoute
+    } = Common(getCurrentInstance());
 
-      deletePopup: {
-        showPoup: false,
-        title: '',
-        content: ''
-      }
-    };
-  },
-  created() {
-    console.log('this.$route.params', this.$route.params);
-    this.getBoardInfo(this.$route.params.id);
-  },
-  mounted() {
-    this.initToastUiViewer();
-  },
-  methods: {
-    getBoardInfo(id) {
+    let boardInfo = ref({});
+    let toastUiViewer = ref({});
+
+    let deletePopup = reactive({
+      showPoup: false,
+      title: '',
+      content: ''
+    });
+
+    let getBoardInfo = id => {
       axios
-        .get(this.HOST_ADD + 'boardInfo/' + id)
+        .get(getHost() + 'boardInfo/' + id)
         .then(response => {
-          this.boardInfo = response.data;
+          boardInfo.value = response.data;
           console.log('boardInfo response', response);
-          this.toastUiViewer.setMarkdown(this.boardInfo.content);
+          toastUiViewer.value.setMarkdown(boardInfo.value.content);
         })
         .catch(error => {
-          this.showToastError(error);
+          showToastError(error);
         });
-    },
-    initToastUiViewer() {
-      this.toastUiViewer = new Viewer({
+    };
+
+    let initToastUiViewer = () => {
+      toastUiViewer.value = new Viewer({
         el: document.querySelector('#viewer')
       });
-    },
-    onDelete() {
-      this.deletePopup.title = `글 삭제`;
-      this.deletePopup.content = `"${this.boardInfo.title}"을 삭제 하시겠습니까?`;
-      this.deletePopup.showPoup = true;
-    },
-    onPopupButtonEvnet(confirm) {
+    };
+
+    let onDelete = () => {
+      deletePopup.title = `글 삭제`;
+      deletePopup.content = `"${boardInfo.value.title}"을 삭제 하시겠습니까?`;
+      deletePopup.showPoup = true;
+    };
+
+    let onPopupButtonEvnet = confirm => {
       if (confirm) {
         axios
-          .delete(this.HOST_ADD + 'board/' + this.$route.params.id)
+          .delete(getHost() + 'board/' + getRoute().params.id)
           .then(response => {
             console.log('onDelete response', response);
             if (response.status == 200) {
-              this.showToastSuccess(`"${this.boardInfo.title}" 삭제 완료`);
-              this.$router.back();
+              showToastSuccess(`"${boardInfo.value.title}" 삭제 완료`);
+              getRouter().back();
             }
           })
           .catch(error => {
-            this.showToastError(error);
+            showToastError(error);
           });
       }
-    },
-    onModify() {
-      this.setStoreWriteInfo(true, this.$route.params.id);
-      this.$router.push({
+    };
+
+    let onModify = () => {
+      setStoreWriteInfo(true, getRoute().params.id);
+      getRouter().push({
         name: 'BlogWrite'
       });
-    }
+    };
+
+    onMounted(() => {
+      initToastUiViewer();
+    });
+
+    console.log('this.$route.params', getRoute().params.id);
+    getBoardInfo(getRoute().params.id);
+
+    return {
+      boardInfo,
+      toastUiViewer,
+      deletePopup,
+      onModify,
+      onDelete,
+      onPopupButtonEvnet
+    };
   }
 };
 </script>

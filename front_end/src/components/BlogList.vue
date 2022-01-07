@@ -56,70 +56,78 @@
 
 <script>
 import axios from 'axios';
-import { CommonMixin } from '@/mixins/CommonMixin.js';
+import { reactive, getCurrentInstance, ref } from '@vue/composition-api';
+import Common from '../composition/CommonUtile';
 export default {
-  mixins: [CommonMixin],
-  created() {
-    this.getList(0);
-    this.getTagList();
-  },
-  data() {
-    return {
-      listData: [],
-      tagList: []
-    };
-  },
+  setup() {
+    let listData = ref([]);
+    let tagList = reactive([]);
 
-  methods: {
-    getTagList() {
+    let common = Common(getCurrentInstance());
+
+    let getTagList = () => {
       axios
-        .get(this.HOST_ADD + 'tagList')
+        .get(common.getHost() + 'tagList')
         .then(response => {
           console.log('response', response);
-          this.tagList.push({
+          tagList.push({
             name: '전체',
             count: response.data.totalCount,
             id: '0'
           });
 
           response.data.tagList.forEach(item => {
-            this.tagList.push({
+            tagList.push({
               name: item.name,
               count: item.count,
               id: item.id,
               selectClass: ''
             });
           });
-          this.onTagItem(this.tagList[0]);
+          onTagItem(tagList[0]);
         })
         .catch(error => {
-          this.showToastError(error);
+          common.showToastError(error);
         });
-    },
-    getList(tagID) {
-      axios.get(this.HOST_ADD + 'boardList/' + tagID).then(response => {
+    };
+
+    let getList = tagID => {
+      axios.get(common.getHost() + 'boardList/' + tagID).then(response => {
         console.log('boardList', response.data);
-        this.listData = response.data;
+        listData.value = response.data;
+        console.log(listData);
       });
-    },
-    onTagItem(item) {
-      this.tagList.forEach(tagItem => {
+    };
+
+    let onTagItem = item => {
+      tagList.forEach(tagItem => {
         if (tagItem.id == item.id) {
           tagItem.selectClass = 'tag_name_select';
         } else {
           tagItem.selectClass = '';
         }
       });
-      this.getList(item.id);
-    },
-    gotoDetailInfo(item) {
-      this.$router.push({
+      getList(item.id);
+    };
+
+    let gotoDetailInfo = item => {
+      common.getRouter().push({
         name: 'BlogListDetail',
         params: {
           id: item.id
         }
       });
-    }
+    };
+
+    getList(0);
+    getTagList();
+
+    return {
+      listData,
+      tagList,
+      onTagItem,
+      gotoDetailInfo
+    };
   }
 };
 </script>

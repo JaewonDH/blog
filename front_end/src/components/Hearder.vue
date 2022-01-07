@@ -30,14 +30,14 @@
 </template>
 
 <script>
-import { CommonMixin } from '@/mixins/CommonMixin.js';
+import Common from '../composition/CommonUtile';
 export default {
-  mixins: [CommonMixin],
   data() {
     return {
       menuDataArray: [
         { title: '목록', path: '/' },
-        { title: '새 글 작성', path: '/BlogWrite' }
+        { title: '새 글 작성', path: '/BlogWrite' },
+        { title: 'test', path: '/test' }
       ],
       navEnable: true
     };
@@ -55,7 +55,8 @@ export default {
     gotoRouterMenu(value) {
       console.log(value);
       if (value == '/BlogWrite') {
-        this.setStoreWriteInfo(false, 0);
+        let common = Common(this);
+        common.setStoreWriteInfo(false, 0);
       }
 
       if (this.$router.history.current.path != value) {

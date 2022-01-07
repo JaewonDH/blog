@@ -20,31 +20,30 @@
 
 <script>
 export default {
-  watch: {
-    showPoup() {
-      console.log('dffsfs');
-    }
-  },
   props: {
     showPoup: Boolean,
     title: String,
     bodyContent: String
   },
-  data() {
-    return {};
-  },
-  methods: {
-    closePopup() {
-      this.$emit('update:showPoup', false);
-    },
-    onConfirmButton() {
-      this.closePopup();
-      this.$emit('onButtonEvnet', true);
-    },
-    onCancelButton() {
-      this.closePopup();
-      this.$emit('onButtonEvnet', false);
-    }
+  setup(props, context) {
+    let closePopup = () => {
+      context.emit('update:showPoup', false);
+    };
+
+    let onConfirmButton = () => {
+      closePopup();
+      context.emit('onButtonEvnet', true);
+    };
+    let onCancelButton = () => {
+      closePopup();
+      context.emit('onButtonEvnet', false);
+    };
+
+    return {
+      closePopup,
+      onConfirmButton,
+      onCancelButton
+    };
   }
 };
 </script>
