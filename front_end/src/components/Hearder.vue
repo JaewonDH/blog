@@ -30,48 +30,58 @@
 </template>
 
 <script>
+import {
+  onMounted,
+  ref,
+  onBeforeUnmount,
+  getCurrentInstance
+} from '@vue/composition-api';
 import Common from '../composition/CommonUtile';
 export default {
-  data() {
-    return {
-      menuDataArray: [
-        { title: '목록', path: '/' },
-        { title: '새 글 작성', path: '/BlogWrite' },
-        { title: 'test', path: '/test' }
-      ],
-      navEnable: true
-    };
-  },
+  setup() {
+    let { getRouter, setStoreWriteInfo } = Common(getCurrentInstance());
 
-  mounted() {
-    window.addEventListener('resize', this.windowResize);
-  },
+    let menuDataArray = ref([
+      { title: '목록', path: '/' },
+      { title: '새 글 작성', path: '/BlogWrite' },
+      { title: 'test', path: '/test' }
+    ]);
 
-  beforeDestroy() {
-    window.removeEventListener('resize', this.windowResize);
-  },
+    let navEnable = ref(true);
 
-  methods: {
-    gotoRouterMenu(value) {
+    let gotoRouterMenu = value => {
       console.log(value);
       if (value == '/BlogWrite') {
-        let common = Common(this);
-        common.setStoreWriteInfo(false, 0);
+        setStoreWriteInfo(false, 0);
       }
 
-      if (this.$router.history.current.path != value) {
-        this.$router.push({ path: value });
+      if (getRouter().history.current.path != value) {
+        getRouter().push({ path: value });
       }
-    },
+    };
 
-    onMenu() {
+    let onMenu = () => {
       console.log('onMenu');
-      this.navEnable = !this.navEnable;
-    },
+      navEnable = !navEnable;
+    };
 
-    windowResize() {
-      this.navEnable = window.innerWidth >= 600 ? true : false;
-    }
+    let windowResize = () => {
+      navEnable = window.innerWidth >= 600 ? true : false;
+    };
+
+    onMounted(() => {
+      window.addEventListener('resize', windowResize);
+    });
+    onBeforeUnmount(() => {
+      window.removeEventListener('resize', windowResize);
+    });
+
+    return {
+      menuDataArray,
+      navEnable,
+      onMenu,
+      gotoRouterMenu
+    };
   }
 };
 </script>
