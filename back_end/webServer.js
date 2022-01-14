@@ -133,6 +133,13 @@ app.put('/boardInfo/:id', formData.array(), (request, response) => {
     });
 });
 
+//로그인 Form
+app.post('/login', formData.array(), function (request, response) {
+  let body = request.body;
+  console.log('email', body.email);
+  console.log('password', body.password);
+});
+
 function getTagName(result, tag) {
   if (result.length == 0) {
     return database.addTagName(tag);

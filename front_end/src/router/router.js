@@ -1,41 +1,44 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import BlogList from '../components/BlogList';
-import BlogListDetail from '../components/BlogListDetail';
-import BlogWrite from '../components/BlogWrite.vue';
-import CSSTest from '../components/CSSTest.vue';
-import Test from '../components/Test';
-
 Vue.use(VueRouter);
-let router = new VueRouter({
+export default new VueRouter({
   mode: 'history',
   routes: [
     {
-      path: '/', // 경로
-      name: 'BlogList', // 해당 경로의 이름
-      component: BlogList // 이동할 컴포넌트
-    },
-
-    {
-      path: '/BlogListDetail/:id', // 경로
-      name: 'BlogListDetail', // 해당 경로의 이름
-      component: BlogListDetail // 이동할 컴포넌트
+      // http://localhost:8080 접속시 redirect 리스트 페이지 표시
+      //처음 페이지 집입시
+      path: '/',
+      redirect: '/BlogList'
     },
     {
-      path: '/BlogWrite', // 경로
-      name: 'BlogWrite', // 해당 경로의 이름
-      component: BlogWrite // 이동할 컴포넌트
+      path: '/BlogList',
+      name: 'BlogList',
+      component: () => import('@/components/BlogList')
     },
     {
-      path: '/CSSTest', // 경로
-      name: 'CSSTest', // 해당 경로의 이름
-      component: CSSTest // 이동할 컴포넌트
+      path: '/BlogListDetail/:id',
+      name: 'BlogListDetail',
+      component: () => import('@/components/BlogListDetail')
     },
     {
-      path: '/test', // 경로
-      name: 'test', // 해당 경로의 이름
-      component: Test // 이동할 컴포넌트
+      path: '/BlogWrite',
+      name: 'BlogWrite',
+      component: () => import('@/components/BlogWrite')
+    },
+    {
+      path: '/CSSTest',
+      name: 'CSSTest',
+      component: () => import('@/components/CSSTest')
+    },
+    {
+      path: '/Test',
+      name: 'Test',
+      component: () => import('@/components/Test')
+    },
+    {
+      // 없는 페이지 설정 http://localhost:8080/34efdf/ 접속시 나오는 페이지
+      path: '*',
+      component: () => import('@/components/NotFound')
     }
   ]
 });
-export default router;

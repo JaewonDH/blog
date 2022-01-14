@@ -1,30 +1,41 @@
 <template>
   <div>
-    <div>{{ user.name }}</div>
-    <!-- //<div v-for="(item, index) in user" :key="index">{{ item }}</div> -->
+    <div>ref :{{ refTest.test }}</div>
+    <div ref="testLabel">reactive : {{ reactiveTest.test }}</div>
   </div>
 </template>
 
 <script>
-import { onMounted, ref } from '@vue/composition-api';
-//import Calculator from '../composition/Calculator';
+import { onMounted, ref, reactive } from '@vue/composition-api';
 export default {
   setup() {
-    let user = ref({ name: '초기화' });
+    let testLabel = ref(null);
+    let refTest = ref({ test: 'refTest' });
+    let reactiveTest = reactive({ test: '초기화' });
 
-    let test = () => {
+    let refTestF = () => {
       setTimeout(() => {
         console.log('dddddddddd');
-        user.value = { name: 'dfsfsdsdfs' };
+        refTest.value = { test: 'refTest 호출됨' };
+      }, 2000);
+    };
+
+    let reactiveF = () => {
+      setTimeout(() => {
+        console.log('dddddddddd');
+        reactiveTest.test = 'sss';
       }, 2000);
     };
 
     onMounted(() => {
-      test();
+      refTestF();
+      reactiveF();
+      console.log('testLabel', testLabel.value);
     });
 
     return {
-      user
+      refTest,
+      reactiveTest
     };
   }
 };

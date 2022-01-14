@@ -1,13 +1,12 @@
-import { reactive, ref } from '@vue/composition-api';
-
+import { ref } from '@vue/composition-api';
 let Common = function(instance) {
   //export default function Common() {
 
+  let HOST_ADD = ref('http://localhost:3333/');
+
   console.log('Common instance', instance);
 
-  let instanceObject = reactive(instance);
-
-  const HOST_ADD = ref('http://localhost:3333/');
+  let instanceObject = instance;
 
   const showToastError = function(message, time) {
     showToast(message, 'error', time);
@@ -36,6 +35,7 @@ let Common = function(instance) {
   const getRoute = () => {
     return instanceObject.proxy.$route;
   };
+
   const showToast = function(message, type, time = 2000) {
     let toastData = {
       message,

@@ -14,9 +14,9 @@
           {{ item.title }}
         </li>
       </ul>
-      <ul id="nav_link" v-if="navEnable">
-        <li>★</li>
-        <li>☆</li>
+      <ul id="nav_menu" v-if="navEnable">
+        <li class="menu_item" @click="onSign()">★ Sign</li>
+        <li class="menu_item" @click="onLogin()">☆ Login</li>
       </ul>
       <a href="#" class="menu-a"
         ><img @click="onMenu()" class="menu-img" src="../assets/menu-icon.png"
@@ -26,6 +26,7 @@
       <!-- <img src="../assets/header_logo.jpg"> -->
       <h1 class="header_block_title">개발 블로그</h1>
     </div>
+    <LoginPopup :showPoup.sync="showLogInPopup" />
   </div>
 </template>
 
@@ -37,14 +38,19 @@ import {
   getCurrentInstance
 } from '@vue/composition-api';
 import Common from '../composition/CommonUtile';
+import LoginPopup from '@/components/LoginPopup';
 export default {
+  components: { LoginPopup },
   setup() {
     let { getRouter, setStoreWriteInfo } = Common(getCurrentInstance());
+
+    let showLogInPopup = ref(false);
+    //let showSignPopup = ref(false);
 
     let menuDataArray = ref([
       { title: '목록', path: '/' },
       { title: '새 글 작성', path: '/BlogWrite' },
-      { title: 'test', path: '/test' }
+      { title: 'test', path: '/Test' }
     ]);
 
     let navEnable = ref(true);
@@ -76,11 +82,25 @@ export default {
       window.removeEventListener('resize', windowResize);
     });
 
+    function onSign() {
+      console.log('onSign');
+      showLogInPopup.value = true;
+    }
+
+    function onLogin() {
+      console.log('onLogin');
+      showLogInPopup.value = true;
+    }
+
     return {
       menuDataArray,
       navEnable,
+      showLogInPopup,
+      //      showSignPopup,
       onMenu,
-      gotoRouterMenu
+      gotoRouterMenu,
+      onSign,
+      onLogin
     };
   }
 };
