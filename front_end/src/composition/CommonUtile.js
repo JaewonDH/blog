@@ -1,12 +1,5 @@
-import { ref } from '@vue/composition-api';
-let Common = function(instance) {
-  //export default function Common() {
-
-  let HOST_ADD = ref('http://localhost:3333/');
-
-  console.log('Common instance', instance);
-
-  let instanceObject = instance;
+let Common = function(instance = null) {
+  const instanceObject = instance;
 
   const showToastError = function(message, time) {
     showToast(message, 'error', time);
@@ -59,7 +52,7 @@ let Common = function(instance) {
   };
 
   const getHost = () => {
-    return HOST_ADD.value;
+    return process.env.VUE_APP_API_URL;
   };
 
   return {

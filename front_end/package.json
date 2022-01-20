@@ -5,7 +5,8 @@
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "to": "vue-cli-service serve --mode ljw"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.35",
@@ -25,6 +26,7 @@
     "tiptap": "^1.31.0",
     "tui-font-size-picker": "^1.0.1",
     "vue": "^2.6.11",
+    "vue-cookies": "^1.7.4",
     "vue-i18n": "^8.25.0",
     "vue-router": "^3.5.2",
     "vuex": "^3.6.2",

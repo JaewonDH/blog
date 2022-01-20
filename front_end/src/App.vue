@@ -7,15 +7,15 @@
 </template>
 
 <script>
-import Hearder from './components/Hearder.vue';
-import ToastMessage from '@/components/ToastMessage';
+import Hearder from '@/components/Hearder.vue'
+import ToastMessage from '@/components/ToastMessage'
 export default {
   name: 'App',
   components: {
     Hearder,
     ToastMessage
   }
-};
+}
 </script>
 
 <style>

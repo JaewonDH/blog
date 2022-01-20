@@ -26,7 +26,6 @@ export default {
     bodyContent: String
   },
   setup(props, context) {
-    
     console.log('props.showPoup', props.showPoup);
     console.log('props.title', props.title);
     console.log('props.bodyContent', props.bodyContent);

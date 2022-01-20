@@ -1,7 +1,7 @@
 <template>
   <div id="main_container">
     <nav>
-      <div id="nav_log" @click="goToBlogList()">
+      <div id="nav_log" @click="goHome()">
         블로그
       </div>
       <ul id="nav_menu" v-if="navEnable">
@@ -15,8 +15,11 @@
         </li>
       </ul>
       <ul id="nav_menu" v-if="navEnable">
-        <li class="menu_item" @click="onSign()">★ Sign</li>
-        <li class="menu_item" @click="onLogin()">☆ Login</li>
+        <li class="menu_item" @click="onSign()" v-if="!isLogin">★ Sign</li>
+        <li class="menu_item" @click="onLogOut()" v-if="isLogin">
+          ☆ LogOut
+        </li>
+        <li class="menu_item" @click="onLogin()" v-else>☆ Login</li>
       </ul>
       <a href="#" class="menu-a"
         ><img @click="onMenu()" class="menu-img" src="../assets/menu-icon.png"
@@ -26,7 +29,6 @@
       <!-- <img src="../assets/header_logo.jpg"> -->
       <h1 class="header_block_title">개발 블로그</h1>
     </div>
-    <LoginPopup :showPoup.sync="showLogInPopup" />
   </div>
 </template>
 
@@ -35,17 +37,25 @@ import {
   onMounted,
   ref,
   onBeforeUnmount,
-  getCurrentInstance
+  getCurrentInstance,
+  computed
+  //  computed
 } from '@vue/composition-api';
-import Common from '../composition/CommonUtile';
-import LoginPopup from '@/components/LoginPopup';
+import Common from '@/composition/CommonUtile';
+import LoginApi from '@/api/loginApi';
 export default {
-  components: { LoginPopup },
   setup() {
-    let { getRouter, setStoreWriteInfo } = Common(getCurrentInstance());
+    let {
+      getRouter,
+      setStoreWriteInfo,
+      showToastError,
+      getStore,
+      getRoute
+    } = Common(getCurrentInstance());
 
     let showLogInPopup = ref(false);
-    //let showSignPopup = ref(false);
+
+    let api = new LoginApi();
 
     let menuDataArray = ref([
       { title: '목록', path: '/' },
@@ -55,6 +65,12 @@ export default {
 
     let navEnable = ref(true);
 
+    let isLogin = computed(() => {
+      //return getStore().state.isLogin;
+      //return getStore().getters.state.LoginStore.isLogin;
+      return getStore().getters['LoginStore/isLogin'];
+    });
+
     let gotoRouterMenu = value => {
       console.log(value);
       if (value == '/BlogWrite') {
@@ -62,7 +78,9 @@ export default {
       }
 
       if (getRouter().history.current.path != value) {
-        getRouter().push({ path: value });
+        getRouter()
+          .push({ path: value })
+          .catch(() => {});
       }
     };
 
@@ -87,20 +105,51 @@ export default {
       showLogInPopup.value = true;
     }
 
-    function onLogin() {
-      console.log('onLogin');
-      showLogInPopup.value = true;
+    async function onLogin() {
+      const bodyForm = new FormData();
+      bodyForm.append('email', 'aaa@a.com');
+      bodyForm.append('password', 'aaaa');
+
+      try {
+        let response = await api.login(bodyForm);
+        //getStore().commit('SET_TOKEN', response.data.token);
+        getStore().commit('LoginStore/SET_TOKEN', response.data.token);
+      } catch (error) {
+        //getStore().commit('CLEAR_TOKEN');
+        getStore().commit('LoginStore/CLEAR_TOKEN');
+        showToastError(error);
+      }
+    }
+
+    function onLogOut() {
+      getStore().commit('LoginStore/CLEAR_TOKEN');
+      moveToBoardList();
+    }
+
+    let moveToBoardList = () => {
+      console.log('getRouter', getRouter());
+      if (getRoute().name.match('BlogWrite')) {
+        goHome();
+      }
+    };
+
+    function goHome() {
+      getRouter()
+        .push('/')
+        .catch(() => {});
     }
 
     return {
       menuDataArray,
       navEnable,
       showLogInPopup,
-      //      showSignPopup,
+      isLogin,
       onMenu,
       gotoRouterMenu,
       onSign,
-      onLogin
+      onLogin,
+      onLogOut,
+      goHome
     };
   }
 };
